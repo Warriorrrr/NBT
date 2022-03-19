@@ -70,11 +70,12 @@ public class Chunk implements Iterable<Section> {
 			return;
 		}
 
-		CompoundTag level;
-		if ((level = data.getCompoundTag("Level")) == null) {
+		dataVersion = data.getInt("DataVersion");
+
+		CompoundTag level = data;
+		if (dataVersion < 2825 && (level = data.getCompoundTag("Level")) == null) { // 2825 = first 1.18 snapshot
 			throw new IllegalArgumentException("data does not contain \"Level\" tag");
 		}
-		dataVersion = data.getInt("DataVersion");
 		inhabitedTime = level.getLong("InhabitedTime");
 		lastUpdate = level.getLong("LastUpdate");
 		if ((loadFlags & BIOMES) != 0) {
