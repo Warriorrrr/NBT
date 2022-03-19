@@ -3,6 +3,7 @@ package net.querz.mca;
 import net.querz.nbt.tag.CompoundTag;
 import net.querz.nbt.tag.Tag;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Arrays;
@@ -56,7 +57,11 @@ public class MCAFile implements Iterable<Chunk> {
 			int offset = raf.read() << 16;
 			offset |= (raf.read() & 0xFF) << 8;
 			offset |= raf.read() & 0xFF;
-			if (raf.readByte() == 0) {
+			try {
+				if (raf.readByte() == 0)
+					continue;
+			} catch (EOFException e) {
+				// Continue on end of file.
 				continue;
 			}
 			raf.seek(4096 + i * 4);
