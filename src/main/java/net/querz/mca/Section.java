@@ -136,6 +136,9 @@ public class Section implements Comparable<Section> {
 	 * @return The block state data of this block.
 	 */
 	public CompoundTag getBlockStateAt(int blockX, int blockY, int blockZ) {
+		if (this.blockStates == null)
+			return null;
+
 		return getBlockStateAt(getBlockIndex(blockX, blockY, blockZ));
 	}
 
